@@ -1,0 +1,16 @@
+Server response codes:
+
+200 - OK
+600 - Incorrect accessToken
+
+101 - Incorrect login
+102 - Incorrect password
+103 - Incorrect name
+104 - Incorrect old password
+105 - Incorrect new password
+106 - Incorrect roomType
+108 - Permission Denied
+109 - Incorrect userId
+110 - Incorrect roomIds
+111 - Incorrect file extension
+112 - Incorrect file content

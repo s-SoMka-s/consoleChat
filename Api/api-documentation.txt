@@ -1,0 +1,236 @@
+** Auth **
+
+1. auth/register
+
+Создает нового пользователя.
+
+Header: {"login": string login, "password": string password}
+Returns: {"response code": int code}
+Errors: 101, 102
+
+
+2. auth/login
+
+Авторизует пользователя (возвращает его accessToken).
+
+Header: {"login": string login, "password": string password}
+Returns: {"response code": int code, "accessToken": string accessToken}
+Errors: 101, 102
+
+
+3. auth/logout
+
+Удаляет соединение пользователя.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600
+
+
+** User **
+
+1. user/setusername?name=<string>
+
+Изменяет имя пользователя.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 103, 600
+
+
+2. user/changepassword
+
+Изменяет пароль пользователя
+
+Header: {"access_token": string accessToken,
+         "old_password": string oldPassword,
+         "new_password": string newPassword}
+Returns: {"response code": int code}
+Errors: 600, 104, 105
+
+
+3. user/deleteaccount
+
+Удаляет аккаунт пользователя из БД.
+
+Header: {"access_token": string accessToken, "password": string password}
+Returns: {"response code": int code}
+Errors: 600, 102
+
+
+** Rooms **
+
+
+1. room/create?name=<string>&type=<int>
+* type является enum'ом и содержит три пункта: private, public, p2p
+
+Создает новую комнату.
+
+Header: {"access_token": string accessToken, "password": string password (optional, if type = private)}
+Returns: {"response code": int code, "room id": int roomId}
+Errors: 600, 102
+
+
+2. room/invite?userId=<int>&roomId=<int>
+
+Приглашает пользователя в комнату.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600, 109, 110
+
+
+3. room/join?roomId=<int>
+
+Добавляет пользователя в комнату.
+
+Header: {"access_token": string accessToken, "password": string password (optional, if type = private)}
+Returns: {"response code": int code}
+Errors: 600, 110, 102
+
+
+4. room/ban?userId=<int>&roomId=<int>
+
+Добавляет пользователя в черный список комнаты.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600, 109, 110, 108
+
+
+5. room/setleader?userId=<int>&roomId=<int>
+
+Устанавливает лидера комнаты.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600, 109, 110, 108
+
+
+6. room/delete?roomId=<int>
+
+Удаляет комнату.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600, 110, 108
+
+
+7. room/leave?roomId=<int>
+
+Удаляет пользователя из списка членов комнаты.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600, 110
+
+
+8. room/changepassword?roomId=<int>
+
+Изменяет пароль комнаты.
+
+Header: {"access_token": string accessToken, "new_password": string newPassword}
+Returns: {"response code": int code}
+Errors: 600, 110, 102, 108
+
+
+9. room/goto?roomId=<int>
+
+Переключает пользователя в другую комнату.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code}
+Errors: 600, 110, 108
+
+
+10. room/getsubscribes
+
+Возвразщает список комнат, на которые подписан пользователь.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "rooms": [{"roomName": string name, "id": int id, "status": int status}, {}...]}}
+Errors: 600, 110
+
+
+11. room/getmembers?roomId=<int>
+
+Возвращает всех членов группы (только тех, на которые подписан пользователь и все публичные группы)
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "rooms": [{"name": string name, "id": int id, "status": int status}, {}...]}
+Errors: 600, 108, 110
+
+
+12. room/gethistory?roomId=<int>&count=<int>
+
+Возвращает историю сообщений комнаты.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "messages": txt?}
+Errors: 600, 108, 110
+
+
+13. room/getall/
+
+Возвращает все созданные комнаты.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "rooms":
+[{"Name": string name, "Id": int id, "Type": int type}, ...]}
+Errors: 600
+
+
+14. room/search/?name=<string>
+
+Возвращает все комнаты с таким названием.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "rooms":
+[{"Name": string name, "Id": int id, "Type": int type}, ...]}
+Errors: 600, 103
+
+
+** Messages **
+
+
+1. messages/send
+
+Отправляет сообщение в группу, в которой в данный момент находится пользователь.
+
+Header: {"access_token": string accessToken}
+Content: Files, string text
+Returns; {"response code": int code}
+Errors: 600, 111, 112
+
+
+2. messages/sendprivate?userId=<int>
+
+Отправляет личное сообщение пользователю.
+
+Header: {"access_token": string accessToken}
+Content: Files, string text
+Returns: {"response code": int code}
+Errors: 600, 109, 111, 112
+
+
+** Other **
+
+
+1. /getusers/
+
+Возвращет всех зарегистрированных пользователей.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "users":
+[{"Name": string name, "Id": int id, "Status": int status}, ...]}
+Errors: 600
+
+
+2. /searchuser/?name=<string>
+
+Возвращает данные всех пользовтелей с таким именем.
+
+Header: {"access_token": string accessToken}
+Returns: {"response code": int code, "users":
+[{"Name": string name, "Id": int id, "Status": int status}, ...]}
+Errors: 600, 103
