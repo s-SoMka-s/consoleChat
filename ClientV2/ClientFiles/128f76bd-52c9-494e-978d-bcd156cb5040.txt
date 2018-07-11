@@ -1,0 +1,14 @@
+git init - new empty folder
+git status - check all changes
+git log - shows all commits
+git checkout - shows all branches
+git remote - shows all remote repositories
+git add <File> / <-A> / <--all>
+git commit -m "Commit description" - add commit
+git remote add origin <URL> - add rep. in origin
+git remote remove <Commit> - delete commit
+git branch <Branch name> - go to branch
+git push -u <Rep. name> <Branch name> - 
+git pull <> <> 
+git clone <URL>
+git checkout <hash> - 
